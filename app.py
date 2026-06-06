@@ -51,7 +51,10 @@ if menu == "🏠 Minha Conta":
     if st.button("Carregar"):
         res = post("/reseller/info")
         if res.get("status") == "OK":
-            d = res["data"]
+    d = res.get("data", {})
+    if not d:
+        st.warning("Resposta vazia da API.")
+    else:
             col1, col2, col3 = st.columns(3)
             col1.metric("Apelido", d.get("apelido", "-"))
             col2.metric("Saldo", f"R$ {d.get('saldo', 0):.2f}")
